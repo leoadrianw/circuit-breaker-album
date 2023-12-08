@@ -1,0 +1,27 @@
+server:
+  port: 8089
+spring:
+  application:
+    name: CircuitBreaker
+
+management:
+  endpoints.web.exposure.include:
+    - '*'
+  endpoint.health.show-details: always
+  health.circuitbreakers.enabled: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      albumcb:
+        register-health-indicator: true
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        slowCallRateThreshold: 40
+        slowCallDurationThreshold: 10s
+        waitDurationInOpenState: 20s
+        failureRateThreshold: 70
+        eventConsumerBufferSize: 10
